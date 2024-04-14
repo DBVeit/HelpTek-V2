@@ -1,18 +1,24 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <HomePage />
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import HomePage from "@/components/HomePage.vue";
 
 export default {
   name: "HomeView",
   components: {
-    HelloWorld,
+    HomePage,
+  },
+  created() {
+    import("../assets/css/view/HomeView.css")
+      .then(() => {
+        console.log("HomeView style loaded");
+      })
+      .catch((err) => {
+        console.error("HomeView style load failed", err);
+      });
   },
 };
 </script>
