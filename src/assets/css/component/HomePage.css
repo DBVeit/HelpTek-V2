@@ -54,14 +54,20 @@
 .nav-item:hover,
 .nav-item.active {
     background-color: #444;
+    cursor: pointer;
 }
 
 .main-content {
     flex-grow: 1;
-    padding: 20px;
     margin-left: 250px;
     padding-top: 20px;
+    padding-left: 60px;
     align-self: flex-start;
+}
+
+.form-group{
+    width: 990px;
+    padding: 3px;
 }
 
 .form-group label {

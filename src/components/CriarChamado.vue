@@ -3,7 +3,7 @@
     <h1>Criar novo chamado</h1>
     <form id="ticket-form">
       <div class="form-group">
-        <label for="subject">Assunto</label>
+        <label for="subject">Título</label>
         <input type="text" id="subject" name="subject" required />
       </div>
       <div class="form-group">
@@ -31,7 +31,7 @@
         <label for="attachment">Anexo</label>
         <input type="file" id="attachment" name="attachment" />
       </div>
-      <button type="submit" class="submit-button">Criar chamado</button>
+      <button type="submit" class="submit-button">Enviar</button>
     </form>
   </div>
 </template>

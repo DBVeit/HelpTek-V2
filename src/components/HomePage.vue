@@ -15,7 +15,9 @@
           Bem vindo, <strong>Demo Admin User</strong> (Admin)
         </div>
         <nav class="nav-menu">
-          <a href="#" class="nav-item">Criar chamado</a>
+          <a class="nav-item" @click.prevent="CriarChamadoForm = true"
+            >Criar chamado</a
+          >
           <a href="#" class="nav-item">Meus chamados</a>
           <a href="#" class="nav-item">Todos os chamados</a>
           <a href="#" class="nav-item">Caixa de entrada</a>
@@ -27,8 +29,8 @@
         </nav>
       </aside>
       <main class="main-content">
-        <!--<CriarChamado />
-        <MeusChamados />
+        <CriarChamado v-if="CriarChamadoForm" />
+        <!--<MeusChamados />
         <TodosChamados />
         <CaixaEntrada />
         <Dashboard />
@@ -41,11 +43,13 @@
   </div>
 </template>
 <script>
-//import CriarChamado from "@/components/CriarChamado.vue";
+import CriarChamado from "@/components/CriarChamado.vue";
 
 export default {
   name: "HomePage",
-  //components: {CriarChamado},
+  components: {
+    CriarChamado,
+  },
 
   created() {
     import("../assets/css/component/HomePage.css")
@@ -55,6 +59,12 @@ export default {
       .catch((err) => {
         console.error("HomeView style load failed", err);
       });
+  },
+
+  data() {
+    return {
+      CriarChamadoForm: false,
+    };
   },
 };
 </script>

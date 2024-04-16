@@ -82,6 +82,11 @@ body {
     margin-left: 8px;
 }
 
+.recover-password:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 button {
     width: 230px;
     height: 60px;
