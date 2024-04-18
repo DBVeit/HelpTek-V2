@@ -14,10 +14,11 @@ if (isset($_GET['action'])) {
             $result = $mysqli_con->query($sql);//Executa a query e armazena em $result
             $obj = $result->fetch_object();//Retorna o registro de $result como um objeto
 
-            $idDB = $obj->id_user;//Obtem o atributo id_user
-
             //Se o numero de linhas retornados em $result for maior que 0...
             if ($result->num_rows > 0) {
+                $idDB = $obj->id_user;//Obtem o atributo id_user
+                $validEmail = true;
+
                 $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
                 $pass = array(); //remember to declare $pass as an array
                 $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
@@ -31,6 +32,8 @@ if (isset($_GET['action'])) {
 
                 $sql = "UPDATE users SET password_user='$newpasshash',troca_senha=1 WHERE id_user='$idDB'";
                 $result = $mysqli_con->query($sql);//Executa a query e armazena em $result
+
+                //sendMail();
 
                 $res['msg'] = "E-Mail para recuperação de acesso enviado, verifique sua caixa de entrada. Nova senha: ".$newpass;
             }else{

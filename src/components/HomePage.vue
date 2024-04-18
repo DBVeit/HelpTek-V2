@@ -13,12 +13,26 @@
       <aside class="sidebar">
         <div class="welcome-message">
           Bem vindo, <strong>Demo Admin User</strong> (Admin)
+          <br />
+          <a href="">Logout</a>
         </div>
         <nav class="nav-menu">
-          <a class="nav-item" @click.prevent="CriarChamadoForm = true"
+          <a
+            class="nav-item"
+            @click.prevent="
+              CriarChamadoForm = true;
+              MeusChamadosList = false;
+            "
             >Criar chamado</a
           >
-          <a href="#" class="nav-item">Meus chamados</a>
+          <a
+            class="nav-item"
+            @click.prevent="
+              MeusChamadosList = true;
+              CriarChamadoForm = false;
+            "
+            >Meus chamados</a
+          >
           <a href="#" class="nav-item">Todos os chamados</a>
           <a href="#" class="nav-item">Caixa de entrada</a>
           <a href="#" class="nav-item">Dashboard</a>
@@ -30,8 +44,8 @@
       </aside>
       <main class="main-content">
         <CriarChamado v-if="CriarChamadoForm" />
-        <!--<MeusChamados />
-        <TodosChamados />
+        <MeusChamados v-if="MeusChamadosList" />
+        <!--<TodosChamados />
         <CaixaEntrada />
         <Dashboard />
         <Relatorios />
@@ -44,11 +58,13 @@
 </template>
 <script>
 import CriarChamado from "@/components/CriarChamado.vue";
+import MeusChamados from "@/components/MeusChamados.vue";
 
 export default {
   name: "HomePage",
   components: {
     CriarChamado,
+    MeusChamados,
   },
 
   created() {
@@ -64,6 +80,7 @@ export default {
   data() {
     return {
       CriarChamadoForm: false,
+      MeusChamadosList: false,
     };
   },
 };

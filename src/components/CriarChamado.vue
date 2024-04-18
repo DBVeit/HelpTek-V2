@@ -1,38 +1,104 @@
 <template>
   <div class="ticket-form-container">
     <h1>Criar novo chamado</h1>
-    <form id="ticket-form">
+    <form method="POST" @submit.prevent="onCriarChamado()">
       <div class="form-group">
-        <label for="subject">Título</label>
-        <input type="text" id="subject" name="subject" required />
+        <label>Título</label>
+        <input
+          type="text"
+          id="subject"
+          name="titulo"
+          v-model="ChamadoData.titulo"
+          required
+        />
       </div>
       <div class="form-group">
-        <label for="description">Descrição</label>
+        <label>Descrição</label>
         <textarea
           id="description"
-          name="description"
+          name="descricao"
           rows="4"
+          v-model="ChamadoData.descricao"
           required
         ></textarea>
       </div>
       <div class="form-group">
-        <label for="start-date">Data de Início</label>
-        <input type="date" id="start-date" name="start-date" required />
-      </div>
-      <div class="form-group">
-        <label for="priority">Prioridade</label>
-        <select id="priority" name="priority">
-          <option value="baixa">Baixa</option>
-          <option value="media">Média</option>
-          <option value="alta">Alta</option>
+        <label>Prioridade</label>
+        <select name="gravidade" v-model="ChamadoData.gravidade" required>
+          <option default value="">Gravidade</option>
+          <option value="1">1 - O dano é pouco importante</option>
+          <option value="2">2 - O dano é relativamente importante</option>
+          <option value="3">3 - O dano é importante</option>
+          <option value="4">4 - O dano é muio importante</option>
+          <option value="5">5 - O dano é extremamente importante</option>
+        </select>
+        <select name="urgencia" v-model="ChamadoData.urgencia" required>
+          <option default value="">Urgência</option>
+          <option value="1">1 - Não há pressa</option>
+          <option value="2">2 - Pode-se aguardar</option>
+          <option value="3">3 - Tomar uma ação relativamente urgente</option>
+          <option value="4">4 - Tomar uma ação urgente</option>
+          <option value="5">5 - Tomar uma ação bastante urgente</option>
+        </select>
+        <select name="tendencia" v-model="ChamadoData.tendencia" required>
+          <option default value="">Tendência</option>
+          <option value="1">1 - Tende à desaparecer completamente</option>
+          <option value="2">2 - Tende à melhorar</option>
+          <option value="3">3 - Tende à permanecer</option>
+          <option value="4">4 - Tende à piorar</option>
+          <option value="5">5 - Tende à piorar muito</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="attachment">Anexo</label>
-        <input type="file" id="attachment" name="attachment" />
+        <label>Anexo</label>
+        <input type="file" id="attachment" name="anexo" />
       </div>
+      <br />
       <button type="submit" class="submit-button">Enviar</button>
     </form>
   </div>
 </template>
-<script setup></script>
+<script>
+import axios from "axios";
+
+export default {
+  name: "CriarChamado",
+  data() {
+    return {
+      ChamadoData: {
+        titulo: "",
+        descricao: "",
+        gravidade: "",
+        urgencia: "",
+        tendencia: "",
+      },
+    };
+  },
+  methods: {
+    onCriarChamado() {
+      let data = new FormData();
+      data.append("titulo", this.ChamadoData.titulo);
+      data.append("descricao", this.ChamadoData.descricao);
+      data.append("gravidade", this.ChamadoData.gravidade);
+      data.append("urgencia", this.ChamadoData.urgencia);
+      data.append("tendencia", this.ChamadoData.tendencia);
+      axios
+        .post(
+          "http://localhost/projeto/helptek/php/api/functions/insertChamado.php?action=InsertChamado",
+          data
+        )
+        .then((res) => {
+          console.log("Server response:", res.data);
+          if (res.data.error == true) {
+            alert(res.data.msg);
+          } else {
+            alert(res.data.msg);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+};
+</script>

@@ -1,0 +1,27 @@
+.chamados-list-table{
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.chamados-list-table td,th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.chamados-list-table tr:hover {background-color: #ddd;}
+
+.chamados-list-table th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #ff5757;
+    color: white;
+}
+
+
+.bt-chamado{
+    height: 30px;
+    width: 60px;
+    font-size: 10px;
+    word-break: break-word;
+}
