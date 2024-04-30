@@ -17,4 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS'){
     exit(0);
 }
 
+date_default_timezone_set("America/Sao_Paulo");
+
+$GLOBALS['secretJWT'] = 'helptek**';
+
 ?>

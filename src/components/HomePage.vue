@@ -7,7 +7,6 @@
         class="logo"
       />
       <input type="search" placeholder="Pesquisar aqui" class="search-bar" />
-      <button class="new-ticket-btn">Novo chamado</button>
     </div>
     <div class="main-container">
       <aside class="sidebar">
@@ -17,6 +16,7 @@
           <a href="">Logout</a>
         </div>
         <nav class="nav-menu">
+          <a href="#" class="nav-item">Atualizações</a>
           <a
             class="nav-item"
             @click.prevent="
@@ -34,7 +34,6 @@
             >Meus chamados</a
           >
           <a href="#" class="nav-item">Todos os chamados</a>
-          <a href="#" class="nav-item">Caixa de entrada</a>
           <a href="#" class="nav-item">Dashboard</a>
           <a href="#" class="nav-item">Relatórios</a>
           <a href="#" class="nav-item">Perfil</a>
@@ -46,7 +45,7 @@
         <CriarChamado v-if="CriarChamadoForm" />
         <MeusChamados v-if="MeusChamadosList" />
         <!--<TodosChamados />
-        <CaixaEntrada />
+        <Atualizacoes />
         <Dashboard />
         <Relatorios />
         <Perfil />
@@ -78,7 +77,9 @@ export default {
   },
 
   data() {
+    const id_user = sessionStorage.getItem("id_user");
     return {
+      id_user: id_user,
       CriarChamadoForm: false,
       MeusChamadosList: false,
     };

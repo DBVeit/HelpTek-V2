@@ -11,7 +11,32 @@ export default {
   components: {
     LoginForm,
   },
-  created() {
+  data() {
+    return {
+      loginViewStyle: null,
+    };
+  },
+  mounted() {
+    this.loadLoginViewStyle();
+  },
+  beforeDestroy() {
+    this.unloadLoginViewStyle();
+  },
+  methods: {
+    loadLoginViewStyle() {
+      import("../assets/css/view/LoginView.css")
+        .then(() => {
+          console.log("LoginView style loaded");
+        })
+        .catch((err) => {
+          console.error("LoginView style load failed", err);
+        });
+    },
+    unloadLoginViewStyle() {
+      this.loginViewStyle = null;
+    },
+  },
+  /*created() {
     import("../assets/css/view/LoginView.css")
       .then(() => {
         console.log("LoginView style loaded");
@@ -19,6 +44,6 @@ export default {
       .catch((err) => {
         console.error("LoginView style load failed", err);
       });
-  },
+  },*/
 };
 </script>

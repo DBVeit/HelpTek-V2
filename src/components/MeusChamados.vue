@@ -10,6 +10,7 @@
             <th>Prioridade</th>
             <th>Data de criação</th>
             <th>Status</th>
+            <!--<th>Minutos de espera</th>-->
             <th>Atualizado em</th>
             <th>Concluído em</th>
           </tr>
@@ -17,14 +18,15 @@
         <tbody>
           <tr v-for="chamados in Chamados" :key="chamados.id_chamado">
             <td>{{ chamados.id_chamado }}</td>
-            <td>{{ chamados.titulo_chamado }}</td>
+            <td class="title">{{ chamados.titulo_chamado }}</td>
             <td>{{ chamados.prioridade_chamado }}</td>
             <td>{{ chamados.data_criacao_fm }}</td>
             <td>{{ chamados.status }}</td>
+            <!--<td>{{ chamados.minutos_espera }}</td>-->
             <td>{{ chamados.data_atualizacao }}</td>
             <td>{{ chamados.data_conclusao }}</td>
             <td>
-              <button class="bt-chamado">Visualizar/Editar</button>
+              <button class="bt-chamado">Ver</button>
             </td>
             <td><button class="bt-chamado">Cancelar</button></td>
           </tr>
@@ -58,9 +60,10 @@ export default {
   },
   methods: {
     onListarChamados() {
+      const id_user = sessionStorage.getItem("id_user");
       axios
         .get(
-          "http://localhost/projeto/helptek/php/api/functions/selectChamados.php?action=selectChamados"
+          `http://localhost/projeto/helptek/php/api/functions/selectChamados.php?action=selectChamados&id_user=${id_user}`
         )
         .then((res) => {
           console.log("Server response:", res.data);

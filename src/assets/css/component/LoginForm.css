@@ -21,7 +21,7 @@ body {
     align-items: center;
 }
 
-.logo {
+.login_logo {
     width: 226px;
     height: 90px;
     margin-bottom: 35px;
@@ -29,7 +29,7 @@ body {
     justify-content: center;
 }
 
-.logo img {
+.login_logo img {
     max-width: 100%;
     height: auto;
 }

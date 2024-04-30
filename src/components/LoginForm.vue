@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="logo">
+    <div class="login_logo">
       <img src="../assets/img/LogoHelpTek.png" alt="Logo HelpTek" />
     </div>
     <div id="loginform" v-if="loginform">
@@ -96,10 +96,11 @@ export default {
       data.append("password", this.User.password);
       axios
         .post(
-          "http://localhost/projeto/helptek/php/api/api.php?action=login",
+          "http://localhost/projeto/helptek/php/api/functions/login.php?action=login",
           data
         )
         .then((res) => {
+          console.log(res.data);
           console.log("Server response:", res.data.code);
           if (res.data.code !== 200) {
             //console.log("Error: ", res.data.code);
@@ -107,7 +108,9 @@ export default {
           } else {
             //console.log("Success", res.data.code);
             alert(res.data.msg);
-            this.$router.push("/HomeView");
+            this.$router.push("/Home");
+            localStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("id_user", res.data.id_user);
           }
         })
         .catch((err) => {

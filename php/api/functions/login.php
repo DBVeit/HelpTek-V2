@@ -1,24 +1,9 @@
 <?php
-include "../config/dbconnect.php";
+include "../../config/dbconnect.php";
+include "../../config/httpaccess.php";
+include "../../public/jwt.class.php";
 
-if (isset($_SERVER['HTTP_ORIGIN'])){
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Credentials: true');
-    header('Access-Control-Max-Age: 1000');
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS'){
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
-    }
-
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
-        header("Access-Control-Allow-Headers: Accept, Content-Type, Content-Length, Accept-Encoding, x-CSRF-Token, Authorization");
-    }
-    exit(0);
-}
-
-$res = array('error' => false, 'msg' => '', 'code' => '');
+$res = array('error' => false, 'msg' => '', 'code' => '', 'token' => '', 'id_user' => '');
 
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
@@ -39,13 +24,16 @@ if (isset($_GET['action'])) {
                 $passwordDB = $obj->password_user;//Obtem o atributo password_user
                 $validUsername = true;
                 $validPassword = password_verify($password,$passwordDB);
+
+                session_start();
+
                 /*Compara $password recebido do POST com o valor do atributo salvo no banco de dados
                 * armazena o comparativo em $validPassword
                 */
 
-                session_start();
                 //Se $validPassword for verdadeiro...
                 if ($validPassword){
+
                     $_SESSION['user_id'] = $idDB;
 
                     $expire_in = time() + 60000;
@@ -54,9 +42,11 @@ if (isset($_GET['action'])) {
                         'name'       => $name_userDB,
                         'expires_in' => $expire_in,
                     ], $GLOBALS['secretJWT']);
-                    $res['token'] = $token;
+
                     $res['msg'] = "Logado com sucesso!";
                     $res['code'] = 200;
+                    $res['token'] = $token;
+                    $res['id_user'] = $_SESSION['user_id'];
                 } else { //Do contrario...
                     $res['error'] = true;
                     $res['msg'] = "E-mail ou senha inválidos!";
@@ -79,5 +69,4 @@ $mysqli_con -> close();
 header("Content-type: application/json");
 echo json_encode($res);
 die();
-
 ?>

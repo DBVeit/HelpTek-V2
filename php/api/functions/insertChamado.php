@@ -17,10 +17,23 @@ if (isset($_GET['action'])) {
 
         $prioridade = (intval($gravidade)*intval($urgencia)*intval($tendencia));
 
-        $sql = "INSERT INTO chamados(`titulo_chamado`,`descricao_chamado`,`gravidade`,`urgencia`,`tendencia`,`prioridade_chamado`) VALUES('$titulo','$descricao','$gravidade','$urgencia','$tendencia','$prioridade')";
+        $id_user = $_POST['id_user'];
 
-        $result = $mysqli_con->query($sql);
-        $res['msg'] = "Chamado registrado com sucesso!";
+        $select = "SELECT id_user FROM users WHERE id_user = '$id_user'";
+        $res_select = $mysqli_con->query($select);
+        $obj = $res_select->fetch_object();
+
+        if ($res_select->num_rows == 1) {
+            $id_user = $obj->id_user;
+
+            $sql = "INSERT INTO chamados(`id_user`,`titulo_chamado`,`descricao_chamado`,`gravidade`,`urgencia`,`tendencia`,`prioridade_chamado`) VALUES('$id_user','$titulo','$descricao','$gravidade','$urgencia','$tendencia','$prioridade')";
+
+            $result = $mysqli_con->query($sql);
+            $res['msg'] = "Chamado registrado com sucesso!";
+        } else{
+            $res['error'] = true;
+            $res['msg'] = "Erro ao registrar chamado, acionar TI! Cod.171 ID: ".$id_user;
+        }
 
     }else{
         $res['error'] = true;

@@ -64,6 +64,7 @@ import axios from "axios";
 export default {
   name: "CriarChamado",
   data() {
+    const id_user = sessionStorage.getItem("id_user");
     return {
       ChamadoData: {
         titulo: "",
@@ -71,6 +72,7 @@ export default {
         gravidade: "",
         urgencia: "",
         tendencia: "",
+        id_user: id_user,
       },
     };
   },
@@ -82,6 +84,7 @@ export default {
       data.append("gravidade", this.ChamadoData.gravidade);
       data.append("urgencia", this.ChamadoData.urgencia);
       data.append("tendencia", this.ChamadoData.tendencia);
+      data.append("id_user", this.ChamadoData.id_user);
       axios
         .post(
           "http://localhost/projeto/helptek/php/api/functions/insertChamado.php?action=InsertChamado",

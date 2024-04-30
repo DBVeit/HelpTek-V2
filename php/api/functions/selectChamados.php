@@ -6,9 +6,10 @@ $res = array('error' => false, 'msg' => '', 'chamados' => '');
 
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
+    $id_user = $_GET['id_user'];
 
     if ($action == "selectChamados") {
-        $sql = "SELECT *,DATE_FORMAT(data_criacao, '%d/%m/%Y') AS data_criacao_fm FROM chamados;";
+        $sql = "SELECT *,DATE_FORMAT(data_criacao, '%d/%m/%Y') AS data_criacao_fm,TIMESTAMPDIFF(MINUTE, data_criacao, NOW()) AS minutos_espera FROM chamados WHERE id_user='$id_user';";
         $result = $mysqli_con->query($sql);
         $num = mysqli_num_rows($result);
         $chamados = array();
