@@ -32,3 +32,64 @@
     font-size: 11px;
     word-break: break-word;
 }
+
+.modal{
+    width: 100%;
+}
+
+.btn-dismiss-modal{
+    padding: 5px 20px;
+    border: none;
+    background-color: #ff5757;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    position: absolute;
+    margin-left: 200px;
+    width: 60px;
+    height: 55px;
+    text-align: center;
+}
+
+.btn-dismiss-modal:hover {
+    background-color: #e04e4e;
+}
+
+.submit-button-modal{
+    padding: 10px 20px;
+    border: none;
+    background-color: #ff5757;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 60px;
+    font-size: 20px;
+    margin: auto;
+    text-align: center;
+
+}
+.submit-button-modal:hover {
+    background-color: #e04e4e;
+}
+
+.form-group-modal{
+    margin-bottom: 15px;
+    padding: 6px;
+}
+
+.form-group-modal label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group-modal input[type="text"],
+.form-group-modal input[type="date"],
+.form-group-modal select,
+.form-group-modal textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

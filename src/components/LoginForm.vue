@@ -3,6 +3,13 @@
     <div class="login_logo">
       <img src="../assets/img/LogoHelpTek.png" alt="Logo HelpTek" />
     </div>
+    <div
+      class="error-message"
+      v-if="errorMessage"
+      :style="{ opacity: errorMessageOpacity }"
+    >
+      {{ errorMessage }}
+    </div>
     <div id="loginform" v-if="loginform">
       <form method="POST" class="login-form" @submit.prevent="onLogin()">
         <div class="input-group">
@@ -39,6 +46,13 @@
         </div>
         <button type="submit">Entrar</button>
       </form>
+    </div>
+    <div
+      class="recover-message"
+      v-if="recoverMessage"
+      :style="{ opacity: recoverMessageOpacity }"
+    >
+      {{ recoverMessage }}
     </div>
     <div id="recoverform" v-if="recoverform">
       <form method="POST" class="login-form" @submit.prevent="onRecovery()">
@@ -82,12 +96,17 @@ export default {
       recoverform: false,
       User: { username: "", password: "" },
       Rec: { emailUser: "" },
+      errorMessage: "",
+      errorMessageOpacity: 1,
+      recoverMessage: "",
+      recoverMessageOpacity: 1,
     };
   },
   methods: {
     onLogin() {
       if (!this.User.username || !this.User.password) {
-        alert("Por favor, preencha todos os campos.");
+        //alert("Por favor, preencha todos os campos.");
+        this.errorMessage = "Por favor, preencha todos os campos.";
         return;
       }
 
@@ -100,17 +119,22 @@ export default {
           data
         )
         .then((res) => {
-          console.log(res.data);
-          console.log("Server response:", res.data.code);
+          console.log(res.data); // REMOVER
+          console.log("Server response:", res.data.code); // REMOVER
           if (res.data.code !== 200) {
             //console.log("Error: ", res.data.code);
-            alert(res.data.msg);
+            //alert(res.data.msg);
+            this.errorMessage = res.data.msg;
+            this.fadeOutErrorMessage();
           } else {
             //console.log("Success", res.data.code);
-            alert(res.data.msg);
+            //alert(res.data.msg);
             this.$router.push("/Home");
             localStorage.setItem("token", res.data.token);
             sessionStorage.setItem("id_user", res.data.id_user);
+            sessionStorage.setItem("first_name", res.data.first_name);
+            sessionStorage.setItem("level_user", res.data.level_user);
+            sessionStorage.setItem("permission", res.data.user_permission);
           }
         })
         .catch((err) => {
@@ -130,19 +154,59 @@ export default {
           dataRec
         )
         .then((res) => {
-          console.log("Server response:", res.data);
+          console.log("Server response:", res.data); // REMOVER
           if (res.data.error === true) {
             //console.log("Error: ", res.data.code);
-            alert(res.data.msg);
+            this.recoverMessage = res.data.msg;
+            this.fadeOutErrorRecMsg();
+            //alert(res.data.msg);
           } else {
             //console.log("Success", res.data.code);
-            alert(res.data.msg);
+            this.recoverMessage = res.data.msg;
+            this.fadeOutSuccessRecMsg();
+            //alert(res.data.msg);
             //this.$router.push("/");
           }
         })
         .catch((err) => {
           console.log("Err", err);
         });
+    },
+    fadeOutErrorMessage() {
+      let opacity = 1;
+      const interval = setInterval(() => {
+        opacity -= 0.1;
+        this.errorMessageOpacity = opacity;
+        if (opacity <= 0) {
+          clearInterval(interval);
+          this.errorMessage = "";
+          this.errorMessageOpacity = 1;
+        }
+      }, 250);
+    },
+    fadeOutErrorRecMsg() {
+      let opacity = 1;
+      const interval = setInterval(() => {
+        opacity -= 0.1;
+        this.recoverMessageOpacity = opacity;
+        if (opacity <= 0) {
+          clearInterval(interval);
+          this.recoverMessage = "";
+          this.recoverMessageOpacity = 1;
+        }
+      }, 200);
+    },
+    fadeOutSuccessRecMsg() {
+      let opacity = 1;
+      const interval = setInterval(() => {
+        opacity -= 0.1;
+        this.recoverMessageOpacity = opacity;
+        if (opacity <= 0) {
+          clearInterval(interval);
+          this.recoverMessage = "";
+          this.recoverMessageOpacity = 1;
+        }
+      }, 300);
     },
   },
 };

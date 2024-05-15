@@ -1,6 +1,16 @@
 <template>
   <div class="ticket-form-container">
     <h1>Meus chamados</h1>
+    <div class="filter">
+      Filtros:
+      <select>
+        <option selected disabled>Selecionar...</option>
+        <option>Em aberto</option>
+        <option>Em atendimento</option>
+        <option>Concluídos</option>
+      </select>
+      <a href="">Limpar filtros</a>
+    </div>
     <div>
       <table cellpadding="5" class="chamados-list-table">
         <thead>
@@ -26,12 +36,69 @@
             <td>{{ chamados.data_atualizacao }}</td>
             <td>{{ chamados.data_conclusao }}</td>
             <td>
-              <button class="bt-chamado">Ver</button>
+              <button
+                class="bt-chamado"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+                @click="verChamado(chamados)"
+              >
+                Ver
+              </button>
             </td>
-            <td><button class="bt-chamado">Cancelar</button></td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header" style="width: 70%">
+            <h4 class="modal-title">Dados do chamado</h4>
+            <button
+              type="button"
+              class="btn-close"
+              style="padding: 5px"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form method="" @submit.prevent="">
+              <div class="form-group-modal">
+                <label>Título</label>
+                <input
+                  type="text"
+                  id="subject"
+                  v-model="ChamadoData.titulo_chamado"
+                  disabled
+                />
+              </div>
+              <div class="form-group-modal">
+                <label>Descrição</label>
+                <textarea
+                  id="description"
+                  rows="4"
+                  v-model="ChamadoData.descricao_chamado"
+                  disabled
+                ></textarea>
+              </div>
+              <div class="form-group-modal">
+                <label>Prioridade</label>
+                <select v-model="ChamadoData.gravidade" disabled></select>
+                <select v-model="ChamadoData.urgencia" disabled></select>
+                <select v-model="ChamadoData.tendencia" disabled></select>
+              </div>
+              <br />
+              <button type="submit" class="submit-button-modal">Editar</button>
+              <button type="submit" class="submit-button-modal">
+                Cancelar Chamado
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +112,7 @@ export default {
       ChamadoData: {
         id_chamado: "",
         titulo_chamado: "",
+        descricao_chamado: "",
         prioridade_chamado: "",
         data_criacao: "",
         status: "",
@@ -72,6 +140,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    verChamado(id_chamado) {
+      this.ChamadoData = id_chamado;
     },
   },
 };

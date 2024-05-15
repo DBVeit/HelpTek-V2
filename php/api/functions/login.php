@@ -22,6 +22,8 @@ if (isset($_GET['action'])) {
                 $idDB = $obj->id_user;//Obtem o atributo id_user
                 $name_userDB = $obj->name_user;//Obtem o atributo name_user
                 $passwordDB = $obj->password_user;//Obtem o atributo password_user
+                $first_nameDB = $obj->first_name;
+                $level_userDB = $obj->level_user;
                 $validUsername = true;
                 $validPassword = password_verify($password,$passwordDB);
 
@@ -35,6 +37,8 @@ if (isset($_GET['action'])) {
                 if ($validPassword){
 
                     $_SESSION['user_id'] = $idDB;
+                    $_SESSION['user_fname'] = $first_nameDB;
+                    $_SESSION['user_level'] = $level_userDB;
 
                     $expire_in = time() + 60000;
                     $token = JWT::encode([
@@ -43,18 +47,38 @@ if (isset($_GET['action'])) {
                         'expires_in' => $expire_in,
                     ], $GLOBALS['secretJWT']);
 
+                    $level = $_SESSION['user_level'];
+
+                    switch ($level){
+                        case 1:
+                            $level = "Solicitante";
+                            break;
+                        case 2:
+                            $level = "Técnico";
+                            break;
+                        case 3:
+                            $level = "Gerente técnico";
+                            break;
+                        case 4:
+                            $level = "Administrador";
+                            break;
+                    }
+
                     $res['msg'] = "Logado com sucesso!";
                     $res['code'] = 200;
                     $res['token'] = $token;
                     $res['id_user'] = $_SESSION['user_id'];
+                    $res['first_name'] = $_SESSION['user_fname'];
+                    $res['level_user'] = $level;
+                    $res['user_permission'] = $_SESSION['user_level'];
                 } else { //Do contrario...
                     $res['error'] = true;
-                    $res['msg'] = "E-mail ou senha inválidos!";
+                    $res['msg'] = "Usuário e/ou senha inválidos!";
                     $res['code'] = 401;
                 }
             } else{
                 $res['error'] = true;
-                $res['msg'] = "E-mail ou senha inválidos!";
+                $res['msg'] = "Usuário e/ou senha inválidos!";
                 $res['code'] = 401;
             }
         } else {

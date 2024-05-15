@@ -76,15 +76,19 @@ body {
     display: inline-block;
 }
 
-.forgot-recover a {
+.recover-password {
     color: #ff5757;
-    font-size: 14px;
+    font-size: 16px;
     margin-left: 8px;
+    text-decoration: none;
+    transition-duration: 0.5s;
 }
 
 .recover-password:hover{
     cursor: pointer;
     text-decoration: underline;
+    color: red;
+    transition-duration: 0.5s;
 }
 
 button {
@@ -103,4 +107,22 @@ button {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.error-message{
+    background-color: #ffbcbc;
+    border-radius: 5px;
+    padding: 2px 8px 2px 8px;
+    color: red;
+    font-weight: bold;
+    transition: opacity 0.5s ease;
+}
+
+.recover-message{
+    background-color: #ffbcbc;
+    border-radius: 5px;
+    padding: 2px 8px 2px 8px;
+    color: red;
+    font-weight: bold;
+    transition: opacity 0.9s ease;
 }

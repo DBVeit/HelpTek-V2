@@ -11,9 +11,9 @@
     <div class="main-container">
       <aside class="sidebar">
         <div class="welcome-message">
-          Bem vindo, <strong>Demo Admin User</strong> (Admin)
+          Bem vindo, <strong>{{ nameUser }}</strong> ({{ typeUser }})
           <br />
-          <a href="">Logout</a>
+          <a href="#" @click.prevent="logout">Logout</a>
         </div>
         <nav class="nav-menu">
           <a href="#" class="nav-item">Atualizações</a>
@@ -66,6 +66,17 @@ export default {
     MeusChamados,
   },
 
+  data() {
+    const id_user = sessionStorage.getItem("id_user");
+    return {
+      id_user: id_user,
+      nameUser: "",
+      typeUser: "",
+      CriarChamadoForm: false,
+      MeusChamadosList: false,
+    };
+  },
+
   created() {
     import("../assets/css/component/HomePage.css")
       .then(() => {
@@ -74,15 +85,22 @@ export default {
       .catch((err) => {
         console.error("HomeView style load failed", err);
       });
+    const nameUser = sessionStorage.getItem("first_name");
+    const typeUser = sessionStorage.getItem("level_user");
+
+    this.nameUser = nameUser || "Usuário";
+    this.typeUser = typeUser || "Usuário";
   },
 
-  data() {
-    const id_user = sessionStorage.getItem("id_user");
-    return {
-      id_user: id_user,
-      CriarChamadoForm: false,
-      MeusChamadosList: false,
-    };
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("id_user");
+      sessionStorage.removeItem("first_name");
+      sessionStorage.removeItem("level_user");
+
+      this.$router.push("/Login");
+    },
   },
 };
 </script>
