@@ -3,13 +3,16 @@
     <h1>Meus chamados</h1>
     <div class="filter">
       Filtros:
-      <select>
+      <select v-model="selectedStatus" @change="filterChamados">
         <option selected disabled>Selecionar...</option>
-        <option>Em aberto</option>
-        <option>Em atendimento</option>
-        <option>Concluídos</option>
+        <option value="1">Em aberto</option>
+        <option value="2">Em atendimento</option>
+        <option value="3">Concluídos</option>
+        <option value="0">Cancelados</option>
       </select>
-      <a href="">Limpar filtros</a>
+      <a href="" @click.prevent="limparFiltros" v-if="selectedStatus !== null"
+        >Limpar filtros</a
+      >
     </div>
     <div>
       <table cellpadding="5" class="chamados-list-table">
@@ -31,7 +34,7 @@
             <td class="title">{{ chamados.titulo_chamado }}</td>
             <td>{{ chamados.prioridade_chamado }}</td>
             <td>{{ chamados.data_criacao_fm }}</td>
-            <td>{{ chamados.status }}</td>
+            <td>{{ chamados.status_chamado }}</td>
             <!--<td>{{ chamados.minutos_espera }}</td>-->
             <td>{{ chamados.data_atualizacao }}</td>
             <td>{{ chamados.data_conclusao }}</td>
@@ -115,11 +118,12 @@ export default {
         descricao_chamado: "",
         prioridade_chamado: "",
         data_criacao: "",
-        status: "",
+        status_chamado: "",
         data_atualizacao: "",
         data_conclusao: "",
       },
       Chamados: [],
+      selectedStatus: null,
     };
   },
   created() {
@@ -143,6 +147,27 @@ export default {
     },
     verChamado(id_chamado) {
       this.ChamadoData = id_chamado;
+    },
+
+    filterChamados() {
+      const id_user = sessionStorage.getItem("id_user");
+      if (!this.selectedStatus) return;
+      axios
+        .get(
+          `http://localhost/projeto/helptek/php/api/functions/selectChamados.php?action=selectChamados&id_user=${id_user}&status_chamado=${this.selectedStatus}`
+        )
+        //.get(`/api/chamados?status_chamado=${this.selectedStatus}`)
+        .then((response) => {
+          this.Chamados = response.data.chamados;
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar chamados:", error);
+        });
+    },
+    limparFiltros() {
+      this.selectedStatus = null;
+      this.onListarChamados();
+      // Limpar a lista de chamados filtrados
     },
   },
 };
