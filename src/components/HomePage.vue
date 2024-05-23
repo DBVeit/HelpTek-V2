@@ -16,29 +16,37 @@
           <a href="#" @click.prevent="logout">Logout</a>
         </div>
         <nav class="nav-menu">
-          <a href="#" class="nav-item">Atualizações</a>
-          <a
-            class="nav-item"
-            @click.prevent="
-              CriarChamadoForm = true;
-              MeusChamadosList = false;
-            "
-            >Criar chamado</a
-          >
-          <a
-            class="nav-item"
-            @click.prevent="
-              MeusChamadosList = true;
-              CriarChamadoForm = false;
-            "
-            >Meus chamados</a
-          >
-          <a href="#" class="nav-item">Todos os chamados</a>
-          <a href="#" class="nav-item">Dashboard</a>
-          <a href="#" class="nav-item">Relatórios</a>
-          <a href="#" class="nav-item">Perfil</a>
-          <a href="#" class="nav-item">Configurações do sistema</a>
-          <a href="#" class="nav-item">Configurações de usuários</a>
+          <div v-for="(menuItem, index) in menuItems" :key="index">
+            <a
+              href="#"
+              class="nav-item"
+              @click.prevent="handleMenuClick(menuItem)"
+              >{{ menuItem }}</a
+            >
+            <!--<a href="#" class="nav-item">Atualizações</a>
+            <a
+              class="nav-item"
+              @click.prevent="
+                CriarChamadoForm = true;
+                MeusChamadosList = false;
+              "
+              >Criar chamado</a
+            >
+            <a
+              class="nav-item"
+              @click.prevent="
+                MeusChamadosList = true;
+                CriarChamadoForm = false;
+              "
+              >Meus chamados</a
+            >
+            <a href="#" class="nav-item">Todos os chamados</a>
+            <a href="#" class="nav-item">Dashboard</a>
+            <a href="#" class="nav-item">Relatórios</a>
+            <a href="#" class="nav-item">Perfil</a>
+            <a href="#" class="nav-item">Configurações do sistema</a>
+            <a href="#" class="nav-item">Configurações de usuários</a>-->
+          </div>
         </nav>
       </aside>
       <main class="main-content">
@@ -58,6 +66,7 @@
 <script>
 import CriarChamado from "@/components/CriarChamado.vue";
 import MeusChamados from "@/components/MeusChamados.vue";
+import axios from "axios";
 
 export default {
   name: "HomePage",
@@ -69,6 +78,7 @@ export default {
   data() {
     const id_user = sessionStorage.getItem("id_user");
     return {
+      menuItems: [],
       id_user: id_user,
       nameUser: "",
       typeUser: "",
@@ -90,9 +100,35 @@ export default {
 
     this.nameUser = nameUser || "Usuário";
     this.typeUser = typeUser || "Usuário";
+    this.fetchUserMenus();
   },
 
   methods: {
+    fetchUserMenus() {
+      axios
+        .get(
+          `http://localhost/projeto/helptek/php/api/functions/getMenus.php?id_user=${this.id_user}`
+        )
+        .then((response) => {
+          if (!response.data.error) {
+            this.menuItems = response.data.menus;
+          } else {
+            console.error("Erro ao buscar menus: ", response.data.msg);
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar menus: ", error);
+        });
+    },
+    handleMenuClick(menuItem) {
+      if (menuItem === "Criar chamado") {
+        this.CriarChamadoForm = true;
+        this.MeusChamadosList = false;
+      } else if (menuItem === "Meus chamados") {
+        this.CriarChamadoForm = false;
+        this.MeusChamadosList = true;
+      }
+    },
     logout() {
       localStorage.removeItem("token");
       sessionStorage.removeItem("id_user");

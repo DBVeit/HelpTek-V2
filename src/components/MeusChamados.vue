@@ -93,11 +93,17 @@
                 <select v-model="ChamadoData.urgencia" disabled></select>
                 <select v-model="ChamadoData.tendencia" disabled></select>
               </div>
-              <br />
-              <button type="submit" class="submit-button-modal">Editar</button>
-              <button type="submit" class="submit-button-modal">
-                Cancelar Chamado
-              </button>
+              <div>
+                <label>Anexos</label>
+              </div>
+              <div>
+                <button type="submit" class="submit-button-modal">
+                  Editar
+                </button>
+                <button type="submit" class="submit-button-modal">
+                  Cancelar Chamado
+                </button>
+              </div>
             </form>
           </div>
         </div>
